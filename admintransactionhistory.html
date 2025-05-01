@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Transaction History</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+     :root {
+            --primary-color: #478fe2; /* Blue */
+            --secondary-color: #ff9100; /* Orange */
+            --nav-bg: #4326aa3a;
+            --dark-bg: #121212;
+            --light-text: #ffffff;
+            --muted-text: #bbbbbb;
+        }
+     .nav-bar {
+            background-color: var(--nav-bg);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .nav-logo {
+            height: 50px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .bu-text {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .polangui-text {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary-color);
+            background-color: rgba(255, 215, 0, 0.1);
+        }
+    
+        .admin-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .admin-info-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-name-display {
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        .admin-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-circle:hover {
+            background-color: var(--secondary-color);
+            color: var(--dark-bg);
+            transform: scale(1.1);
+        }
+        
+        .admin-circle i {
+            font-size: 1.2rem;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: var(--nav-bg);
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            z-index: 1;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .dropdown-content a {
+            color: var(--light-text);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .dropdown-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0;
+        }
+        
+        .admin-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-admin-info {
+            padding: 12px 16px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-admin-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .dropdown-admin-email {
+            font-size: 0.8rem;
+            color: var(--muted-text);
+        }
+        
+        .dropdown-admin-role {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        .admin-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+</style>
+</head>
+<body>
+    <style>
+    </style>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="BU Logo.png" alt="Bicol University Logo" class="nav-logo">
+                <div class="logo-text">
+                    <span class="bu-text">Bicol University</span>
+                    <span class="polangui-text">Polangui</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link">Manage Fees</a>
+                <a href="#" class="nav-link">Transaction History</a>
+                <a href="#" class="nav-link">Report</a>
+                <a href="#" class="nav-link">Help</a>
+                <div class="admin-dropdown" id="adminDropdown">
+                    <div class="admin-info-container">
+                        <span class="admin-name-display" id="adminNameDisplay">Admin User</span>
+                        <div class="admin-circle">
+                        <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="dropdown-content">
+                        <div class="dropdown-admin-info">
+                            <div class="dropdown-admin-name" id="dropdownAdminName">Admin User</div>
+                            <div class="dropdown-admin-email" id="dropdownAdminEmail">admin@bicol-u.edu.ph</div>
+                            <div class="dropdown-admin-role">Administrator</div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#"><i class="fas fa-cog"></i> Account Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+<style>
+
+    :root {
+      --primary-color: #478fe2;
+      --secondary-color: #ff9100;
+      --nav-bg: #4326aa3a;
+      --light-text: #ffffff;
+    }
+    .footer {
+            margin-top: 3rem;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--muted-text);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .admin-subtitle {
+                font-size: 1rem;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+          
+        @media (max-width: 576px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-name-display {
+                display: none;
+            }
+        }
+
+    body {
+      background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('bupc2_orig.jpg');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: var(--light-text);
+      margin: 0;
+    }
+
+    header {
+      background-color: var(--nav-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .logo h2 {
+      margin: 0;
+      color: var(--primary-color);
+    }
+
+    .dashboard h1 {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+      background-color: rgba(0, 0, 0, 0.75);
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .filters input {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      background-color: var(--nav-bg);
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .no-results {
+      text-align: center;
+      margin-top: 1rem;
+      color: #bbb;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+
+ 
+</header>
+
+<main>
+  <h2>Admin Transaction History</h2>
+
+  <div class="filters">
+    <input type="text" id="searchName" placeholder="Search by student name">
+    <input type="date" id="startDate">
+    <input type="date" id="endDate">
+  </div>
+
+  <table id="transactionTable">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Transaction ID</th>
+        <th>Date</th>
+        <th>Amount Paid (₱)</th>
+        <th>Cashier</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows populated by JS -->
+    </tbody>
+  </table>
+  <div class="no-results" id="noResults" style="display:none;">No transactions found.</div>
+</main>
+
+<script>
+  const transactions = [
+    { name: "Juan Dela Cruz", id: "TXN001", date: "2025-04-01", amount: 1500.00, cashier: "Cashier A" },
+    { name: "Maria Santos", id: "TXN002", date: "2025-04-03", amount: 2300.00, cashier: "Cashier B" },
+    { name: "Pedro Reyes", id: "TXN003", date: "2025-04-05", amount: 1800.00, cashier: "Cashier A" },
+    { name: "Ana Garcia", id: "TXN004", date: "2025-04-06", amount: 2100.00, cashier: "Cashier C" }
+  ];
+
+  const tableBody = document.querySelector('#transactionTable tbody');
+  const searchInput = document.getElementById('searchName');
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const noResults = document.getElementById('noResults');
+
+  function renderTable(data) {
+    tableBody.innerHTML = "";
+    if (data.length === 0) {
+      noResults.style.display = "block";
+    } else {
+      noResults.style.display = "none";
+      data.forEach(txn => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${txn.name}</td>
+          <td>${txn.id}</td>
+          <td>${txn.date}</td>
+          <td>₱${txn.amount.toFixed(2)}</td>
+          <td>${txn.cashier}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+  }
+
+  function filterTransactions() {
+    const nameFilter = searchInput.value.toLowerCase();
+    const start = startDateInput.value;
+    const end = endDateInput.value;
+
+    const filtered = transactions.filter(txn => {
+      const matchesName = txn.name.toLowerCase().includes(nameFilter);
+      const inDateRange = (!start || txn.date >= start) && (!end || txn.date <= end);
+      return matchesName && inDateRange;
+    });
+
+    renderTable(filtered);
+  }
+
+  searchInput.addEventListener('input', filterTransactions);
+  startDateInput.addEventListener('change', filterTransactions);
+  endDateInput.addEventListener('change', filterTransactions);
+
+  // Initial render
+  renderTable(transactions);
+</script>
+
+<!-- Footer -->
+<div class="footer">
+    <p>© 2023 Bicol University Polangui. All Rights Reserved.</p>
+
+</div>
+</body>
+</html>
