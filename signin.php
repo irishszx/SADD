@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bicol University Polangui - Student Portal Login</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    
     <style>
         :root {
             --bu-maroon: #000000;
@@ -14,8 +14,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, rgba(252, 152, 70, 0.973) 0%, rgba(0, 15, 218, 0.7) 100%), 
-                        url('.vscode/bupc2_orig.jpg') no-repeat center center fixed;
+            background-image: url("bupc.jpg");
             background-size: cover;
             font-family: 'Poppins', sans-serif;
             color: var(--bu-light);
@@ -28,8 +27,8 @@
         }
         
         .login-container {
-            animation: gradientBG 15s ease infinite;
-            background: linear-gradient(-45deg, rgba(122, 0, 60, 0.8), rgba(0, 51, 102, 0.8), rgba(255, 140, 0, 0.8), rgba(255, 210, 0, 0.8));
+            
+            background:rgba(0, 51, 102, 0.8);
             background-size: 400% 400%;
             backdrop-filter: blur(10px);
             padding: 3rem 3rem 2rem;
@@ -231,17 +230,17 @@
 
     <div class="login-container">
         <div class="header-container">
-            <!-- First Logo -->
-            <img src=".vscode/BU Logo.png" alt="Bicol University Logo" class="university-logo">
             
-            <!-- Title Container -->
+            <img src="BU Logo.png" alt="Bicol University Logo" class="university-logo">
+            
+            
             <div class="title-container">
                 <h1>BICOL UNIVERSITY POLANGUI</h1>
                 <h3>WELCOME PLEASE LOGIN.</h3>
             </div>
             
-            <!-- Second Logo -->
-            <img src=".vscode/R.png" alt="Bicol University Secondary Logo" class="university-logo">
+            
+            <img src="R.png" alt="Bicol University Secondary Logo" class="university-logo">
         </div>
         
         <div class="form-container">
@@ -258,16 +257,16 @@
                     <input type="checkbox" id="remember">
                     <label for="remember">Remember Me</label>
                 </div>
-                <a href="#" class="forgot-password">Forgot Password?</a>
+                
             </div>
             
-            <button type="submit">SIGN IN</button>
+            <button type="submit" >SIGN IN</button>
         </div>
       
-        <a class="back-link" href="homeuser.php">← Return to Home Page</a>
+        <a class="back-link" href="visitor'shomepage.html">← Return to Home Page</a>
        
         <div class="footer">
-            © 2023 Bicol University Polangui. All rights reserved.
+            © 2025 Bicol University Polangui. All rights reserved.
         </div>
     </div>
 
