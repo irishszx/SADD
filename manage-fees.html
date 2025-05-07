@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Fees</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #478fe2; /* Blue */
+      --secondary-color: #ff9100; /* Orange */
+      --nav-bg: #4326aa3a;
+      --dark-bg: #121212;
+      --light-text: #ffffff;
+      --muted-text: #bbbbbb;
+      --success-color: #4CAF50;
+    }
+
+    body {
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                  url('bupc2_orig.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--light-text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .main-content { 
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: rgba(0,0,0,0.7);
+      border-radius: 10px;
+    }
+    
+    /* Navigation Bar */
+    .nav-bar {
+      background-color: var(--nav-bg);
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .nav-logo {
+      height: 50px;
+    }
+    
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    
+    .bu-text {
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .polangui-text {
+      color: var(--secondary-color);
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--light-text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: var(--secondary-color);
+      background-color: rgba(255, 215, 0, 0.1);
+    }
+    
+    /* Admin Dropdown Styles */
+    .admin-dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    
+    .admin-info-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .admin-name-display {
+      font-weight: 600;
+      color: var(--light-text);
+    }
+    
+    .admin-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .admin-circle:hover {
+      background-color: var(--secondary-color);
+      color: var(--dark-bg);
+      transform: scale(1.1);
+    }
+    
+    .admin-circle i {
+      font-size: 1.2rem;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: var(--nav-bg);
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      z-index: 1;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .dropdown-content a {
+      color: var(--light-text);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: var(--secondary-color);
+    }
+    
+    .dropdown-divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+    }
+    
+    .admin-dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown-admin-info {
+      padding: 12px 16px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dropdown-admin-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .dropdown-admin-email {
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+    
+    .dropdown-admin-role {
+      font-size: 0.8rem;
+      color: var(--secondary-color);
+      font-weight: bold;
+    }
+    
+    /* Main Content */
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .admin-subtitle {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--secondary-color);
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    
+    .current-date {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      color: var(--light-text);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Fee Management Styles */
+    .fee-management-container {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .fee-list-container {
+      flex: 2;
+    }
+    
+    .fee-form-container {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+    
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--muted-text);
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: var(--light-text);
+      font-size: 1rem;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3a7bc8;
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: var(--dark-bg);
+    }
+    
+    .btn-secondary:hover {
+      background-color: #e68200;
+    }
+    
+    .btn-danger {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+    
+    th {
+      background-color: var(--nav-bg);
+      color: var(--light-text);
+      font-weight: 600;
+    }
+    
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .search-container {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .search-input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: var(--light-text);
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 3rem;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted-text);
+    }
+    
+    /* Fee Category Sections */
+    .fee-category {
+      margin-bottom: 30px;
+    }
+    
+    .category-title {
+      color: var(--secondary-color);
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 145, 0, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .welcome-title {
+        font-size: 2rem;
+      }
+      
+      .admin-subtitle {
+        font-size: 1rem;
+      }
+      
+      .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .fee-management-container {
+        flex-direction: column;
+      }
+    }
+      
+    @media (max-width: 576px) {
+      .admin-name-display {
+        display: none;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="nav-bar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="BU Logo.png" alt="Bicol University Logo" class="nav-logo">
+      <div class="logo-text">
+        <span class="bu-text">Bicol University</span>
+        <span class="polangui-text">Polangui</span>
+      </div>
+    </div>
+    <div class="nav-links">
+    <a href="adminhomepage.html" class="nav-link">Home</a>
+    <a href="adminaboutus.html" class="nav-link">About Us</a>
+    <a href="dashboardadmin.html" class="nav-link">Dashboard</a>
+      <a href="adminhistory.html" class="nav-link">Transaction History</a>
+      <a href="manage-fees.html" class="nav-link">Manage Fees</a>
+     
+
+      <div class="admin-dropdown" id="adminDropdown">
+        <div class="admin-info-container">
+          <span class="admin-name-display" id="adminNameDisplay">Admin User</span>
+          <div class="admin-circle">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+        <div class="dropdown-content">
+          <div class="dropdown-admin-info">
+            <div class="dropdown-admin-name" id="dropdownAdminName">Admin User</div>
+            <div class="dropdown-admin-email" id="dropdownAdminEmail">admin@bicol-u.edu.ph</div>
+            <div class="dropdown-admin-role">Administrator</div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="admin-header">
+    <div>
+      <h1 class="welcome-title">Welcome, <span id="welcomeAdminName">Admin</span></h1>
+      <p class="admin-subtitle">Fee Management Dashboard</p>
+    </div>
+    <div class="current-date" id="currentDate"></div>
+  </div>
+
+  <div class="fee-management-container">
+    <div class="fee-list-container">
+      <h2 class="section-title">Current Fees</h2>
+      
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search fees..." id="searchInput">
+        <button class="btn-primary" id="searchBtn">Search</button>
+      </div>
+      
+      <!-- Certification Fees Section -->
+      <div class="fee-category">
+        <h3 class="category-title"><i class="fas fa-certificate"></i> CERTIFICATION FEES</h3>
+        <table id="certificationFeesTable">
+          <thead>
+            <tr>
+              <th>Fee Code</th>
+              <th>Fee Name</th>
+              <th>Amount (₱)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>COG</td>
+              <td>CERTIFICATE OF GRADES</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('COG')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>GOOD_MORAL</td>
+              <td>GOOD MORAL CERTIFICATE</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('GOOD_MORAL')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>BONAFIDE</td>
+              <td>BONAFIDE STUDENT CERTIFICATE</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('BONAFIDE')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>ENROLLMENT</td>
+              <td>CERTIFICATE OF ENROLLMENT</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('ENROLLMENT')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>PAYMENT</td>
+              <td>CERTIFICATION OF PAYMENT</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('PAYMENT')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>COMPLETION</td>
+              <td>COMPLETION FORM</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('COMPLETION')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>AUTHENTICATION</td>
+              <td>AUTHENTICATION OF DOCUMENTS</td>
+              <td>10.00 per page</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('AUTHENTICATION')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>DISMISSAL</td>
+              <td>HONORABLE DISMISSAL</td>
+              <td>75.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('DISMISSAL')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>TRANSCRIPT</td>
+              <td>TRANSCRIPT OF RECORD</td>
+              <td>30.00 per page</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('TRANSCRIPT')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Other Fees Section -->
+      <div class="fee-category">
+        <h3 class="category-title"><i class="fas fa-id-card"></i> OTHER FEES</h3>
+        <table id="otherFeesTable">
+          <thead>
+            <tr>
+              <th>Fee Code</th>
+              <th>Fee Name</th>
+              <th>Amount (₱)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ID</td>
+              <td>IDENTIFICATION CARD</td>
+              <td>75.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('ID')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>CHANGE_SUBJECT</td>
+              <td>ADDING/CHANGING/DROPPING OF SUBJECTS</td>
+              <td>20.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('CHANGE_SUBJECT')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>THESIS</td>
+              <td>THESIS FEE</td>
+              <td>1,200.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('THESIS')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>OJT</td>
+              <td>ON THE JOB TRAINING FEE</td>
+              <td>200.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('OJT')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>TEACHING</td>
+              <td>PRACTICE TEACHING FEE</td>
+              <td>1,000.00</td>
+              <td class="actions">
+                <button class="btn-secondary btn-sm" onclick="openEditModal('TEACHING')"><i class="fas fa-edit"></i> Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="fee-form-container">
+      <h2 class="section-title">Add/Edit Fee</h2>
+      <form id="feeForm">
+        <div class="form-group">
+          <label for="feeCode">Fee Code</label>
+          <input type="text" id="feeCode" required>
+        </div>
+        <div class="form-group">
+          <label for="feeName">Fee Name</label>
+          <input type="text" id="feeName" required>
+        </div>
+        <div class="form-group">
+          <label for="feeCategory">Category</label>
+          <select id="feeCategory" required>
+            <option value="CERTIFICATION">Certification</option>
+            <option value="OTHER">Other Fees</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="feeAmount">Amount (₱)</label>
+          <input type="number" id="feeAmount" step="0.01" min="0" required>
+        </div>
+        <button type="submit" class="btn-primary" id="submitBtn">Save Fee</button>
+        <button type="button" class="btn-danger" id="cancelBtn" style="display: none; margin-left: 10px;">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>© 2023 Bicol University Polangui. All Rights Reserved.</p>
+</div>
+
+<script>
+  // Set current date
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  // Sample data - in a real app this would come from a database
+  let fees = [
+    {
+      code: 'COG',
+      name: 'CERTIFICATE OF GRADES',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'GOOD_MORAL',
+      name: 'GOOD MORAL CERTIFICATE',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'BONAFIDE',
+      name: 'BONAFIDE STUDENT CERTIFICATE',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'ENROLLMENT',
+      name: 'CERTIFICATE OF ENROLLMENT',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'PAYMENT',
+      name: 'CERTIFICATION OF PAYMENT',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'COMPLETION',
+      name: 'COMPLETION FORM',
+      category: 'CERTIFICATION',
+      amount: 20.00
+    },
+    {
+      code: 'AUTHENTICATION',
+      name: 'AUTHENTICATION OF DOCUMENTS',
+      category: 'CERTIFICATION',
+      amount: 10.00
+    },
+    {
+      code: 'DISMISSAL',
+      name: 'HONORABLE DISMISSAL',
+      category: 'CERTIFICATION',
+      amount: 75.00
+    },
+    {
+      code: 'TRANSCRIPT',
+      name: 'TRANSCRIPT OF RECORD',
+      category: 'CERTIFICATION',
+      amount: 30.00
+    },
+    {
+      code: 'ID',
+      name: 'IDENTIFICATION CARD',
+      category: 'OTHER',
+      amount: 75.00
+    },
+    {
+      code: 'CHANGE_SUBJECT',
+      name: 'ADDING/CHANGING/DROPPING OF SUBJECTS',
+      category: 'OTHER',
+      amount: 20.00
+    },
+    {
+      code: 'THESIS',
+      name: 'THESIS FEE',
+      category: 'OTHER',
+      amount: 1200.00
+    },
+    {
+      code: 'OJT',
+      name: 'ON THE JOB TRAINING FEE',
+      category: 'OTHER',
+      amount: 200.00
+    },
+    {
+      code: 'TEACHING',
+      name: 'PRACTICE TEACHING FEE',
+      category: 'OTHER',
+      amount: 1000.00
+    }
+  ];
+
+  let currentEditFee = null;
+
+  // Form submission
+  document.getElementById('feeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const feeData = {
+      code: document.getElementById('feeCode').value,
+      name: document.getElementById('feeName').value,
+      category: document.getElementById('feeCategory').value,
+      amount: parseFloat(document.getElementById('feeAmount').value)
+    };
+    
+    if (currentEditFee) {
+      // Update existing fee
+      const index = fees.findIndex(f => f.code === currentEditFee);
+      if (index !== -1) {
+        fees[index] = feeData;
+      }
+    } else {
+      // Add new fee
+      fees.push(feeData);
+    }
+    
+    renderFees();
+    resetForm();
+    alert('Fee saved successfully!');
+  });
+
+  // Cancel edit
+  document.getElementById('cancelBtn').addEventListener('click', resetForm);
+
+  // Open edit modal
+  function openEditModal(feeCode) {
+    const fee = fees.find(f => f.code === feeCode);
+    if (fee) {
+      document.getElementById('feeCode').value = fee.code;
+      document.getElementById('feeName').value = fee.name;
+      document.getElementById('feeCategory').value = fee.category;
+      document.getElementById('feeAmount').value = fee.amount;
+      
+      document.getElementById('feeCode').readOnly = true;
+      document.getElementById('submitBtn').textContent = 'Update Fee';
+      document.getElementById('cancelBtn').style.display = 'inline-block';
+      
+      currentEditFee = fee.code;
+    }
+  }
+
+  // Reset form
+  function resetForm() {
+    document.getElementById('feeForm').reset();
+    document.getElementById('feeCode').readOnly = false;
+    document.getElementById('submitBtn').textContent = 'Save Fee';
+    document.getElementById('cancelBtn').style.display = 'none';
+    currentEditFee = null;
+  }
+
+  // Render fees to tables
+  function renderFees() {
+    const certificationTable = document.querySelector('#certificationFeesTable tbody');
+    const otherTable = document.querySelector('#otherFeesTable tbody');
+    
+    certificationTable.innerHTML = '';
+    otherTable.innerHTML = '';
+    
+    fees.forEach(fee => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${fee.code}</td>
+        <td>${fee.name}</td>
+        <td>${fee.amount.toFixed(2)}${fee.code === 'AUTHENTICATION' || fee.code === 'TRANSCRIPT' ? ' per page' : ''}</td>
+        <td class="actions">
+          <button class="btn-secondary btn-sm" onclick="openEditModal('${fee.code}')"><i class="fas fa-edit"></i> Edit</button>
+        </td>
+      `;
+      
+      if (fee.category === 'CERTIFICATION') {
+        certificationTable.appendChild(row);
+      } else {
+        otherTable.appendChild(row);
+      }
+    });
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    renderFees();
+  });
+</script>
+
+</body>
+</html>
