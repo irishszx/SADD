@@ -1,0 +1,3 @@
+insert into users (user_name, email, password, role)
+  values ("User(example)", "user.email@bicol-u.edu.ph", "12345678" "user"),
+         ("Admin(example)", "admin.email@bicol-u.edu.ph", "12345678" "admin");
